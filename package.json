@@ -1,5 +1,5 @@
 {
-    "name": "Meal Connection App",
+    "name": "meal-connection-app",
     "description": "Helping connect restaurants and hospitals during COVID-19",
     "version": "0.0.1",
     "private": true,
