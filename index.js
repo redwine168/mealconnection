@@ -2,7 +2,7 @@ const path = require("path");
 const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
-const url = require('url');
+const sql = require('mssql');
 
 // Additional setup and initialization
 const app = express();
@@ -14,6 +14,14 @@ const publicDirectoryPath = path.join(__dirname, 'public/')
 app.use(express.static(publicDirectoryPath))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Connect to database
+var config = {
+    user: 'mealconnectionadmin',
+    password: 'ifoundaway2020!',
+    server: 'mealconnectiondb.database.windows.net',
+    database: 'mealconnectiondb'
+};
 
 // Set folders for html, css, and js files
 app.set('views', path.join(__dirname, '../public/views'))
@@ -28,6 +36,14 @@ app.get('/', function(req, res) {
 // GET for restaurant page
 app.get('/restaurant', function(req, res) {
     console.log("Request for restaurant page");
+    sql.connect(config, function (err) {
+        if (err) console.log(err);
+        var request = new sql.Request();
+        request.query('select * from Hospitals', function (err, recordset) {
+            if (err) console.log(err);
+            console.log(recordset);
+        })
+    })
     res.sendFile(publicDirectoryPath + 'views/restaurant.html');
 })
 
